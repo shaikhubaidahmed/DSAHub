@@ -1,15 +1,18 @@
 export type ProblemSource = "neetcode" | "striver";
 
-export type Platform = "leetcode" | "gfg" | "neetcode" | "takeuforward" | "youtube";
+export type Platform = "leetcode" | "gfg" | "neetcode" | "takeuforward" | "neetcodeVideo" | "striverVideo";
 
-export type ProblemStatus = "not-started" | "in-progress" | "completed";
+export type ProblemStatus = "not-started" | "completed";
+
+export type Difficulty = "easy" | "medium" | "hard";
 
 export interface ProblemLinks {
   leetcode?: string;
   gfg?: string;
   neetcode?: string;
   takeuforward?: string;
-  youtube?: string;
+  neetcodeVideo?: string;
+  striverVideo?: string;
 }
 
 export interface Problem {
@@ -19,6 +22,7 @@ export interface Problem {
   category: string;
   sources: ProblemSource[];
   links: ProblemLinks;
+  difficulty?: Difficulty;
   note?: string;
 }
 

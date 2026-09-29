@@ -6,13 +6,13 @@ import "@/app/globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "DSA Hub — deliberate practice, organized",
-    template: "%s — DSA Hub",
+    default: "DSAHub — deliberate practice, organized",
+    template: "%s — DSAHub",
   },
   description: "A focused practice system for the deduplicated NeetCode 150 and Striver DSA reference.",
   keywords: ["DSA", "data structures", "algorithms", "NeetCode", "Striver", "LeetCode"],
   openGraph: {
-    title: "DSA Hub — deliberate practice, organized",
+    title: "DSAHub — deliberate practice, organized",
     description: "Browse 269 curated DSA problems by pattern, source, and progress.",
     type: "website",
   },

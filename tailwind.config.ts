@@ -11,6 +11,8 @@ const config: Config = {
         line: "rgb(var(--line) / <alpha-value>)",
         muted: "rgb(var(--muted) / <alpha-value>)",
         signal: "rgb(var(--signal) / <alpha-value>)",
+        "brand-dsa": "rgb(var(--brand-dsa) / <alpha-value>)",
+        "brand-hub": "rgb(var(--brand-hub) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],

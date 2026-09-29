@@ -1,5 +1,5 @@
 # DsaHub
-# DSA Hub
+# DSAHub
 
 A focused Next.js practice system for the deduplicated NeetCode 150 + Striver Master DSA Patterns reference.
 
@@ -34,3 +34,13 @@ The repository is configured with `origin` pointing to `https://github.com/shaik
 ```bash
 git push
 ```
+
+## Deploy to GitHub Pages
+
+The site is a static export (`output: "export"` in `next.config.mjs`). Every push to `main` runs `.github/workflows/deploy-pages.yml`, which builds with `PAGES_BASE_PATH=/DSAHub` and publishes `out/` to https://shaikhubaidahmed.github.io/DSAHub/.
+
+One-time setup: in the GitHub repo, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+
+Progress is stored in the browser's `localStorage`, so it persists across tab and browser restarts on the same browser and device. It is not synced between devices, and clearing the site's data resets it.
+
+To preview the exported site locally, run `npm run build` and serve `out/` with any static file server. `next start` does not work with static export; use `npm run dev` for development.

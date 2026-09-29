@@ -3,7 +3,8 @@ import { ArrowUpRight, ChevronRight } from "lucide-react";
 import type { Problem } from "@/lib/types";
 import { PlatformLinks } from "@/components/platform-links";
 import { SourceBadges } from "@/components/source-badges";
-import { StatusSelect } from "@/components/status-select";
+import { CompletionToggle } from "@/components/completion-toggle";
+import { DifficultyTag } from "@/components/difficulty-tag";
 
 export function ProblemRow({ problem, index }: { problem: Problem; index: number }) {
   return (
@@ -13,11 +14,12 @@ export function ProblemRow({ problem, index }: { problem: Problem; index: number
         <div className="problem-title-line">
           <Link href={`/problem/${problem.slug}`} className="problem-title">{problem.title}</Link>
           <SourceBadges sources={problem.sources} />
+          <DifficultyTag difficulty={problem.difficulty} />
         </div>
         <div className="problem-meta"><span>{problem.category}</span>{problem.note ? <span className="note-marker">Variant note</span> : null}</div>
       </div>
       <PlatformLinks links={problem.links} compact />
-      <StatusSelect problem={problem} />
+      <CompletionToggle problem={problem} />
       <Link href={`/problem/${problem.slug}`} className="row-arrow" aria-label={`Open ${problem.title}`}><ChevronRight size={17} /></Link>
     </article>
   );

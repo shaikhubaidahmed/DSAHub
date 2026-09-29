@@ -6,6 +6,7 @@ import { BookOpen, CheckCircle2, Moon, Search, Sun, Waypoints } from "lucide-rea
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { useTheme } from "@/components/providers";
+import { BrandLogo } from "@/components/brand-logo";
 
 const navItems = [
   { href: "/problems", label: "Problems", icon: BookOpen },
@@ -63,12 +64,8 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="site-header">
         <div className="site-header-inner">
-          <Link href="/" className="brand" aria-label="DSA Hub home">
-            <span className="brand-mark" aria-hidden="true">D</span>
-            <span>
-              <span className="brand-name">DSA Hub</span>
-              <span className="brand-subtitle">practice system</span>
-            </span>
+          <Link href="/" className="brand" aria-label="DSAHub home">
+            <BrandLogo />
           </Link>
 
           <nav className="desktop-nav" aria-label="Primary navigation">

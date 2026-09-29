@@ -23,7 +23,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     const saved = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
     if (saved) {
       try {
-        setProgress(JSON.parse(saved) as ProgressMap);
+        const parsed = JSON.parse(saved) as Record<string, string>;
+        setProgress(Object.fromEntries(Object.entries(parsed).filter(([, status]) => status === "completed")) as ProgressMap);
       } catch {
         window.localStorage.removeItem(PROGRESS_STORAGE_KEY);
       }

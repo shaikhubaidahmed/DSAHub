@@ -13,7 +13,6 @@ import json
 import re
 from collections import Counter
 from pathlib import Path
-from urllib.parse import parse_qs, urlsplit, urlunsplit
 
 import fitz
 
@@ -91,6 +90,29 @@ GFG_LINKS_BY_SLUG = {
 }
 
 
+# The PDF carries NeetCode walkthrough videos for NeetCode 150 entries, but only
+# two Striver videos. Striver videos are curated from the official takeUforward
+# A2Z sheet (matched by the practice-page slug the PDF links to) and verified as
+# "take U forward" uploads via YouTube oEmbed. Keys use the stable slugs below.
+STRIVER_VIDEOS_BY_SLUG: dict[str, str] = json.loads(
+    Path(__file__).with_name("striver-videos.json").read_text(encoding="utf-8")
+)
+
+
+# Difficulty is not in the PDF. It is the official rating from the platform the
+# entry links to: LeetCode (GraphQL `question.difficulty`) when a LeetCode link
+# exists, otherwise the GFG practice API (`difficulty`). The GFG Z-function page
+# is access-restricted, so that entry is left unrated rather than guessed.
+DIFFICULTY_BY_SLUG: dict[str, str] = json.loads(
+    Path(__file__).with_name("difficulties.json").read_text(encoding="utf-8")
+)
+
+
+def youtube_id(uri: str) -> str | None:
+    match = re.search(r"(?:youtu\.be/|[?&]v=|/embed/)([A-Za-z0-9_-]{11})", uri)
+    return match.group(1) if match else None
+
+
 def slugify(value: str) -> str:
     value = value.lower().replace("&", " and ")
     value = re.sub(r"[^a-z0-9]+", "-", value)
@@ -99,11 +121,10 @@ def slugify(value: str) -> str:
 
 def normalize_uri(uri: str) -> str:
     """Keep source URLs canonical enough for direct practice links."""
-    if "youtube.com" not in uri:
+    if "youtube.com" not in uri and "youtu.be" not in uri:
         return uri
-    parsed = urlsplit(uri)
-    video_id = parse_qs(parsed.query).get("v", [""])[0].split("?")[0]
-    return urlunsplit((parsed.scheme, parsed.netloc, parsed.path, f"v={video_id}", "")) if video_id else uri
+    video_id = youtube_id(uri)
+    return f"https://www.youtube.com/watch?v={video_id}" if video_id else uri
 
 
 def parse_pdf(input_path: Path) -> list[dict]:
@@ -168,8 +189,8 @@ def parse_pdf(input_path: Path) -> list[dict]:
                             current["links"]["neetcode"] = uri
                         elif "takeuforward.org" in uri:
                             current["links"]["takeuforward"] = uri
-                        elif "youtube.com" in uri:
-                            current["links"]["youtube"] = uri
+                        elif "youtube.com" in uri or "youtu.be" in uri:
+                            current["links"]["video"] = uri
 
     title_counts = Counter(slugify(problem["title"]) for problem in problems)
     used_ids: set[str] = set()
@@ -187,6 +208,16 @@ def parse_pdf(input_path: Path) -> list[dict]:
         problem["slug"] = slug
         if "leetcode" not in problem["links"] and slug in GFG_LINKS_BY_SLUG:
             problem["links"]["gfg"] = GFG_LINKS_BY_SLUG[slug]
+        # Split the PDF's single YouTube column by channel: its Striver videos
+        # are all present in the curated map, everything else is NeetCode.
+        pdf_video = problem["links"].pop("video", None)
+        striver_video = STRIVER_VIDEOS_BY_SLUG.get(slug)
+        if pdf_video and youtube_id(pdf_video) != youtube_id(striver_video or ""):
+            problem["links"]["neetcodeVideo"] = pdf_video
+        if striver_video:
+            problem["links"]["striverVideo"] = striver_video
+        if slug in DIFFICULTY_BY_SLUG:
+            problem["difficulty"] = DIFFICULTY_BY_SLUG[slug]
         if not problem.get("note"):
             problem.pop("note", None)
 

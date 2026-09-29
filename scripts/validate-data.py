@@ -67,6 +67,22 @@ def main() -> None:
     ):
         failures.append("one or more GFG fallbacks are not practice problem URLs")
 
+    if any("neetcodeVideo" in problem["links"] and "neetcode" not in problem["sources"] for problem in parsed):
+        failures.append("NeetCode video attached to a problem without the [N] marker")
+    if any("striverVideo" in problem["links"] and "striver" not in problem["sources"] for problem in parsed):
+        failures.append("Striver video attached to a problem without the [S] marker")
+    if any(
+        not problem["links"][key].startswith("https://www.youtube.com/watch?v=")
+        for problem in parsed
+        for key in ("neetcodeVideo", "striverVideo")
+        if key in problem["links"]
+    ):
+        failures.append("one or more video links are not canonical YouTube watch URLs")
+
+    unrated = [problem["title"] for problem in parsed if problem.get("difficulty") not in ("easy", "medium", "hard")]
+    if unrated != ["Z function"]:
+        failures.append(f"unexpected difficulty coverage; unrated entries: {unrated}")
+
     if failures:
         for failure in failures:
             print(f"FAIL: {failure}")

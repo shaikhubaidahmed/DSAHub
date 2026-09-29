@@ -21,18 +21,18 @@ export function HomeDashboard() {
       <section className="hero">
         <div className="hero-grid">
           <div>
-            <span className="eyebrow">Field notes / DSA practice system</span>
-            <h1 className="display-title">Build the habit.<br /><em>Keep the signal.</em></h1>
-            <p className="lede">A deliberate path through the deduplicated NeetCode 150 and Striver patterns reference. Browse by idea, practice by pattern, and keep your own progress local.</p>
+            <span className="eyebrow">DSA Hub / problem index</span>
+            <h1 className="display-title">Practice by pattern.<br /><em>Keep your signal.</em></h1>
+            <p className="lede">A focused path through 269 deduplicated NeetCode and Striver problems. Choose the idea, open the practice link, and leave your progress on this device.</p>
             <div className="hero-actions">
-              <Link href="/problems" className="button-primary">Open problem explorer <ArrowRight size={15} /></Link>
-              <Link href="/patterns" className="button-secondary">Browse patterns</Link>
+              <Link href="/problems" className="button-primary">Start with problems <ArrowRight size={15} /></Link>
+              <Link href="/patterns" className="button-secondary">See the pattern map</Link>
             </div>
           </div>
           <aside className="hero-side">
-            <span className="hero-side-label">Collection size</span>
-            <div className="hero-side-number">{collectionTotals.total}</div>
-            <p className="hero-side-copy">verified entries, organized into {categorySummaries.length} pattern groups.</p>
+            <span className="hero-side-label">Local practice state</span>
+            <div className="hero-side-number">{completed}/{collectionTotals.total}</div>
+            <p className="hero-side-copy">completed locally across {categorySummaries.length} pattern groups.</p>
             <ProgressBar value={completion} label={`${completed} completed`} />
           </aside>
         </div>
@@ -47,7 +47,7 @@ export function HomeDashboard() {
       <p className="source-note">The PDF headline says 179 Striver entries, while its explicit badges account for 178. The hub uses the problem-level badges as the source of truth.</p>
 
       <section className="home-section">
-        <div className="section-heading"><div><h2>Pick a pattern</h2><p>Strong hierarchy, practical repetition, no noise.</p></div><Link className="text-link" href="/patterns">View all patterns <ArrowRight size={13} /></Link></div>
+        <div className="section-heading"><div><h2>Start with a pattern</h2><p>Pick the mental model before the individual problem.</p></div><Link className="text-link" href="/patterns">View all patterns <ArrowRight size={13} /></Link></div>
         <div className="category-grid">
           {categorySummaries.slice(0, 6).map((category, index) => <Link className="category-card" href={`/pattern/${category.slug}`} key={category.slug}><span className="category-number">{String(index + 1).padStart(2, "0")}</span><span className="category-count">{category.count} problems</span><h3>{category.name}</h3><p>{category.description}</p><ArrowRight className="category-card-arrow" size={16} /></Link>)}
         </div>

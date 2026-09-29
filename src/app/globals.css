@@ -82,7 +82,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
 .button-primary, .button-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 15px; border-radius: 5px; font-size: 12px; font-weight: 750; transition: transform .2s ease, background-color .2s ease, border-color .2s ease; }
 .button-primary { background: rgb(var(--ink)); color: rgb(var(--paper)); }
-.button-primary:hover { transform: translateY(-1px); background: rgb(var(--signal)); color: rgb(var(--ink)); }
+.button-primary:hover { transform: translateY(-1px); background: rgb(var(--signal)); color: white; }
+[data-theme="dark"] .button-primary:hover { color: rgb(24 24 27); }
 .button-secondary { border: 1px solid rgb(var(--line)); color: rgb(var(--ink)); background: rgb(var(--panel)); }
 .button-secondary:hover { border-color: rgb(var(--signal)); background: rgb(var(--signal-soft)); }
 
